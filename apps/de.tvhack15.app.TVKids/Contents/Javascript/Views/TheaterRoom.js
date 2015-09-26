@@ -8,12 +8,7 @@ var TheaterRoom = new MAF.Class({
     initialize: function () {
         var view = this;
         view.parent();
-        // Create a Room across all households
-//		view.room = new MAF.Room(view.ClassName);
-        // Create a Room for this specific household
-//        view.room = MAF.messages.fetch("currentRoom");
         view.room = view.persist.room;
-
     },
 
     // Create your view template
@@ -50,6 +45,11 @@ var TheaterRoom = new MAF.Class({
             }
         }).appendTo(view);
 
+    },
+
+    updateView : function () {
+        var view = this;
+
         log(view.room);
         view.roomListener.subscribeTo(view.room, this.supportedRoomEvents, view);
     },
@@ -71,6 +71,7 @@ var TheaterRoom = new MAF.Class({
         var payload = event.payload;
         switch (event.type) {
             case 'onData':
+                log('got data from user');
                 var data = payload.data;
                 view.moveMonster(payload.data);
                 break;
@@ -85,7 +86,7 @@ var TheaterRoom = new MAF.Class({
         var view = this;
     },
 
-    supportedRoomEvents: ['onConnected', 'onDisconnected', 'onCreated', 'onDestroyed', 'onJoined', 'onHasLeft', 'onData', 'onError'],
+    supportedRoomEvents: ['onData'],
 
     // Reset the Canvas
     reset : function() {

@@ -109,8 +109,6 @@ var MainView = new MAF.Class({
             case 'onJoined':
                 // If user is not the app then log the user
                 if (payload.user !== room.user) {
-                    MAF.messages.store("currentRoom", room);
-
                     MAF.application.loadView('view-Room',{
                         room : room
                     });
@@ -125,7 +123,7 @@ var MainView = new MAF.Class({
     hideView: function () {
         // Reference to the current view
         var view = this;
-        view.roomListener.unsubscribeFrom(view.room, this.supportedRoomEvents);
+//        view.roomListener.unsubscribeFrom(view.room, this.supportedRoomEvents);
     },
 
     supportedRoomEvents: ['onCreated', 'onJoined'],
