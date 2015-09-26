@@ -5,8 +5,9 @@ function Init () {
         console.log ('connecting to room ' + data.hash);
         window.roomHash = data.hash;
         window.draw = Draw(getRandomColor());
-        bindCanvasEvents();
+
     });
+    bindCanvasEvents();
     // Create Canvas API
     var Canvas = (function () {
         var canvas, ctx,
@@ -130,24 +131,30 @@ function Init () {
     }
 
     function bindCanvasEvents () {
-        // Implement cross device drawing
-        ['mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove'].forEach(function (type) {
-            window.addEventListener(type, function (event) {
-                var service = 'paint',
-                    xy = getXY(event);
-                switch (type) {
-                    case 'mousedown':
-                    case 'touchstart':
-                        service = 'start';
-                        break;
-                    case 'mouseup':
-                    case 'touchend':
-                        service = 'end';
-                        break;
-                }
-                window.draw[service](xy.x, xy.y);
-                event.preventDefault();
-            }, false);
+        $('.draggable').draggable({
+            containment: "tv-canvas",
+            start: function() {
+                console.log('start drag');
+//                counts[ 0 ]++;
+//                updateCounterStatus( $start_counter, counts[ 0 ] );
+            },
+            drag: function() {
+//                counts[ 1 ]++;
+//                updateCounterStatus( $drag_counter, counts[ 1 ] );
+                var $this = $(this);
+                var thisPos = $this.position();
+                var parentPos = $this.parent().position();
+
+                var x = thisPos.left - parentPos.left;
+                var y = thisPos.top - parentPos.top;
+
+                $this.text(x + ", " + y);
+            },
+            stop: function() {
+                console.log('end drag');
+//                counts[ 2 ]++;
+//                updateCounterStatus( $stop_counter, counts[ 2 ] );
+            }
         });
     }
 

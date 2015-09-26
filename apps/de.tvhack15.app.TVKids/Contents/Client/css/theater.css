@@ -1,6 +1,24 @@
-#tv-canvas {
+.container {
+    width: 100%;
+}
+.tv-canvas {
     border: 1px solid;
+    width: 99%;
+    height: 99%;
+    position: relative;
+}
+
+.left {
     float: left;
     width: 70%;
-    height: 99%;
+}
+
+.right {
+    float: right;
+}
+
+.draggable {
+    border: 1px solid;
+    height: 2em;
+    width: 2em;
 }
