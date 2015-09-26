@@ -13,66 +13,40 @@ var MainView = new MAF.Class({
 	createView: function () {
         var view = this;
 
-        var grid = view.elements.elementGrid = new MAF.element.Grid ({
-            currentCellIndex : 0,
-            rows: 1,
-            columns: 4,
+        var container = new MAF.element.Container({
             styles: {
                 width: view.width,
                 height: view.height,
-                backgroundImage: 'Images/title_tv.png',
+                backgroundImage: 'Images/title_tv_bg.png',
                 backgroundRepeat: 'none',
                 backgroundSize: '100%'
-            },
-
-            cellCreator: function () {
-                var cell = new MAF.element.GridCell({
-                    styles: this.getCellDimensions()
-                });
-
-                cell.title = new MAF.element.Text({
-                    styles: {
-                        width: cell.width,
-                        height: cell.height,
-                        color: 'white',
-                        fontSize: 30,
-                        anchorStyle: 'center',
-                        wrap: true
-                    }
-                }).appendTo(cell);
-
-                return cell;
-            },
-            cellUpdater: function (cell, data) {
-                cell.title.setText(data.title);
-                if (cell.getCellIndex() === 0) {
-                    var backButton = new MAF.control.BackButton({
-                        label: $_('BACK'),
-                        styles: {
-                            width: cell.width,
-                            color: 'white',
-                            fontSize: 30,
-                            anchorStyle: 'center',
-                            wrap: true
-                        }
-                    }).appendTo(cell);
-                    var connectionButton = new MAF.element.Image({
-                        src : 'Images/Button_Connect.jpg',
-                        styles: {
-                            color: 'white',
-                            fontSize: 30,
-                            anchorStyle: 'center',
-                            wrap: true,
-                            vOffset:backButton.height + 10
-                        }
-                    }).appendTo(cell);
-                }
             }
+
         }).appendTo(view);
 
-        view.elements.elementGrid.changeDataset([
-            {},{},{},{}
-        ], true);
+        var backButton = new MAF.control.BackButton({
+            styles: {
+                width: 204,
+                height: 82,
+                backgroundImage: 'Images/close.png',
+                backgroundRepeat: 'none',
+                backgroundSize: '100%',
+                hOffset : 40,
+                vOffset : 950
+            }
+        }).appendTo(container);
+
+        var connectImage = new MAF.element.Image({
+            src: 'Images/connect_off.png',
+            styles: {
+                width: 335,
+                height: 121,
+                backgroundRepeat: 'none',
+                backgroundSize: '100%',
+                hOffset : 40,
+                vOffset : 750
+            }
+        }).appendTo(container);
 
         this.initRoom();
     },
