@@ -2,10 +2,8 @@ function Init () {
     var pusher = new Pusher('e09a4bff1cae85b0ca3c');
     var channel = pusher.subscribe('tv-theater-channel');
     channel.bind('room-ready', function(data) {
-        console.log ('connecting to room ' + data.hash);
         window.roomHash = data.hash;
         window.draw = Draw();
-
     });
     bindCanvasEvents();
 
@@ -20,10 +18,6 @@ function Init () {
         room.addEventListener('joined', function (event) {
             // A client has joined
             console.log('user joined', event.user);
-        });
-
-        room.addEventListener('data', function (event) {
-            console.log('data to room')
         });
 
         window.addEventListener('unload', function (event) {
@@ -49,7 +43,6 @@ function Init () {
         $('.draggable').draggable({
             containment: "tv-canvas",
             start: function() {
-                console.log('start drag');
             },
             drag: function(event) {
                 var $this = $(this);
@@ -64,7 +57,6 @@ function Init () {
                 window.draw.moveTo(x,y,monsterId);
             },
             stop: function() {
-                console.log('end drag');
             }
         });
     }
