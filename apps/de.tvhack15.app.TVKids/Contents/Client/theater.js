@@ -82,6 +82,7 @@ function Init () {
     var Draw = (function (c) {
         var enabled = false,
             room = new MAF.Room(window.roomHash);
+        room.hash = window.roomHash;
         room.join(window.roomHash);
 
         room.addEventListener('joined', function (event) {

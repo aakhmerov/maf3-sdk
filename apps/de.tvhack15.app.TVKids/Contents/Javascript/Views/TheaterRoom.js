@@ -1,78 +1,30 @@
-var MainView = new MAF.Class({
-    ClassName: 'MainView',
-    RoomName : 'TheaterRoom',
+// Create a class and extended it from the MAF.system.SidebarView
+var TheaterRoom = new MAF.Class({
+    ClassName: 'TheaterRoom',
 
-	Extends: MAF.system.FullscreenView,
+    Extends: MAF.system.FullscreenView,
 
-	initialize: function () {
-        this.parent();
-        this.room = new MAF.PrivateRoom(this.RoomName);
+    initialize: function () {
+        var view = this;
+        view.parent();
+        // Create a Room across all households
+//		view.room = new MAF.Room(view.ClassName);
+        // Create a Room for this specific household
+        view.room = MAF.messages.fetch("currentRoom");
     },
 
-	createView: function () {
+    // Create your view template
+    createView: function () {
         var view = this;
-
-        var grid = view.elements.elementGrid = new MAF.element.Grid ({
-            currentCellIndex : 0,
-            rows: 1,
-            columns: 4,
+        var grid = view.elements.elementGrid = new MAF.element.Container ({
             styles: {
                 width: view.width,
                 height: view.height,
                 backgroundImage: 'Images/title_tv.png',
                 backgroundRepeat: 'none',
                 backgroundSize: '100%'
-            },
-
-            cellCreator: function () {
-                var cell = new MAF.element.GridCell({
-                    styles: this.getCellDimensions()
-                });
-
-                cell.title = new MAF.element.Text({
-                    styles: {
-                        width: cell.width,
-                        height: cell.height,
-                        color: 'white',
-                        fontSize: 30,
-                        anchorStyle: 'center',
-                        wrap: true
-                    }
-                }).appendTo(cell);
-
-                return cell;
-            },
-            cellUpdater: function (cell, data) {
-                cell.title.setText(data.title);
-                if (cell.getCellIndex() === 0) {
-                    var backButton = new MAF.control.BackButton({
-                        label: $_('BACK'),
-                        styles: {
-                            width: cell.width,
-                            color: 'white',
-                            fontSize: 30,
-                            anchorStyle: 'center',
-                            wrap: true
-                        }
-                    }).appendTo(cell);
-                    var connectionButton = new MAF.element.Image({
-                        src : 'Images/Button_Connect.jpg',
-                        styles: {
-                            color: 'white',
-                            fontSize: 30,
-                            anchorStyle: 'center',
-                            wrap: true,
-                            vOffset:backButton.height + 10
-                        }
-                    }).appendTo(cell);
-                }
             }
         }).appendTo(view);
-
-        view.elements.elementGrid.changeDataset([
-            {},{},{},{}
-        ], true);
-
         this.initRoom(view);
     },
 
@@ -93,16 +45,6 @@ var MainView = new MAF.Class({
                     return;
                 case 'onCreated':
                     // Create an url to the client application and pass the hash as querystring
-                    var url = widget.getUrl('Client/theater.html?hash=' + payload.hash);
-//                  send request to backend so that it notifies client about hash code
-                    new Request({
-                        url: 'http://localhost:8080/notifications/tv',
-                        method: 'POST', //Anything but GET
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        data: {hash: payload.hash}
-                    }).send();
 //                    var triggered = room.channel.trigger('room-ready', { hash: payload.hash });
                     log('room created', payload.hash, url);
                     return;
@@ -112,11 +54,7 @@ var MainView = new MAF.Class({
                     return;
                 case 'onJoined':
                     // If user is not the app then log the user
-                    if (payload.user !== room.user) {
-                        MAF.messages.store("currentRoom", room);
-
-                        MAF.application.loadView('view-Room',{});
-                    }
+                    log ('joined user');
                     return;
                 case 'onHasLeft':
                     // If user is not the app then log the user
@@ -124,6 +62,7 @@ var MainView = new MAF.Class({
                         log('user has left', payload.user);
                     return;
                 case 'onData':
+                    log('GOT DATA FROM USER!');
                     var data = payload.data;
                     if (data.e === 'draw')
                         return;
@@ -158,10 +97,5 @@ var MainView = new MAF.Class({
             view.room.destroy(); // Destroy the room
             delete view.room; // Unreference from view for GC
         }
-    },
-
-	updateView: function () {
-
-	}
-
+    }
 });
