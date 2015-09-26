@@ -20,7 +20,7 @@
         },
         "about": "Images/about.png",
         "icon": {
-            "192x192": "Images/icon.png"
+            "192x192": "Images/monster_yellow.png"
         }
     }
 }
