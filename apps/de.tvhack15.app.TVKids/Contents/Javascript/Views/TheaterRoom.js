@@ -28,11 +28,41 @@ var TheaterRoom = new MAF.Class({
                 backgroundSize: '100%'
             }
         }).appendTo(view);
+        this.monsters = {};
+        this.monsters["1"] = new MAF.element.Image ({
+            src: 'Images/monster_orange.png',
+            styles : {
+                vOffset:0
+            }
+        }).appendTo(view);
+
+        this.monsters["2"] = new MAF.element.Image ({
+            src: 'Images/monster_yellow.png',
+            styles : {
+                vOffset:this.monsters["1"].height
+            }
+        }).appendTo(view);
+
+        this.monsters["3"] = new MAF.element.Image ({
+            src: 'Images/mosnter_green.png',
+            styles : {
+                vOffset:this.monsters["1"].height + this.monsters["2"].height
+            }
+        }).appendTo(view);
+
+        log(view.room);
         view.roomListener.subscribeTo(view.room, this.supportedRoomEvents, view);
     },
 
     handleData : function (event) {
         log(event);
+    },
+
+    moveMonster : function (data) {
+        var view = this;
+        log(view);
+        var monster = this.monsters[data.monster];
+        log(monster);
     },
 
     roomListener : function (event) {
@@ -41,10 +71,8 @@ var TheaterRoom = new MAF.Class({
         var payload = event.payload;
         switch (event.type) {
             case 'onData':
-                log('GOT DATA FROM USER!');
-                log(event.payload);
-                window.Event.call("onData", payload);
                 var data = payload.data;
+                view.moveMonster(payload.data);
                 break;
             default:
                 log(event.type, payload);
