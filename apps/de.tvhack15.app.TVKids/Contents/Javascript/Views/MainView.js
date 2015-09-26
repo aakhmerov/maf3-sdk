@@ -73,8 +73,9 @@ var MainView = new MAF.Class({
             {},{},{},{}
         ], true);
 
+        var pusher = new Pusher('144463');
+        this.channel = pusher.subscribe('tv-theater-channel');
         this.initRoom(view);
-
     },
 
     initRoom : function (view) {
@@ -95,6 +96,7 @@ var MainView = new MAF.Class({
                 case 'onCreated':
                     // Create an url to the client application and pass the hash as querystring
                     var url = widget.getUrl('Client/theater.html?hash=' + payload.hash);
+                    var triggered = this.channel.trigger('room-ready', { hash: payload.hash });
                     log('room created', payload.hash, url);
                     return;
                 case 'onDestroyed':
