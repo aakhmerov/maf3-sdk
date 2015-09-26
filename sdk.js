@@ -26,6 +26,7 @@ var pusher = new Pusher({
 
 handleClientNotificationRequest = function (req,res) {
     var triggered = pusher.trigger('tv-theater-channel','room-ready', req.rawBody);
+    res.send(200);
 };
 
 var IP = (function () {

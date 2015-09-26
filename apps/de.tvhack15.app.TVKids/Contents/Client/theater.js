@@ -2,7 +2,10 @@ function Init () {
     var pusher = new Pusher('e09a4bff1cae85b0ca3c');
     var channel = pusher.subscribe('tv-theater-channel');
     channel.bind('room-ready', function(data) {
-        alert('An event was triggered with message: ' + data.message);
+        console.log ('connecting to room ' + data.hash);
+        window.roomHash = data.hash;
+        Draw(getRandomColor());
+        bindCanvasEvents();
     });
     // Create Canvas API
     var Canvas = (function () {
@@ -76,9 +79,10 @@ function Init () {
     }
 
     // Draw API
-    var Draw = (function (c) {
+    var Draw = function (c) {
         var enabled = false,
-            room = new MAF.Room();
+            room = new MAF.Room(window.roomHash);
+        room.join(window.roomHash);
 
         room.addEventListener('joined', function (event) {
             // A client has joined
@@ -112,7 +116,7 @@ function Init () {
             end: end,
             paint: paint
         }
-    }(getRandomColor()));
+    };
 
     // Implement cross device xy conversion
     function getXY(e) {
@@ -124,25 +128,28 @@ function Init () {
         };
     }
 
-    // Implement cross device drawing
-    ['mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove'].forEach(function (type) {
-        window.addEventListener(type, function (event) {
-            var service = 'paint',
-                xy = getXY(event);
-            switch (type) {
-                case 'mousedown':
-                case 'touchstart':
-                    service = 'start';
-                    break;
-                case 'mouseup':
-                case 'touchend':
-                    service = 'end';
-                    break;
-            }
-            Draw[service](xy.x, xy.y);
-            event.preventDefault();
-        }, false);
-    });
+    function bindCanvasEvents () {
+        // Implement cross device drawing
+        ['mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove'].forEach(function (type) {
+            window.addEventListener(type, function (event) {
+                var service = 'paint',
+                    xy = getXY(event);
+                switch (type) {
+                    case 'mousedown':
+                    case 'touchstart':
+                        service = 'start';
+                        break;
+                    case 'mouseup':
+                    case 'touchend':
+                        service = 'end';
+                        break;
+                }
+                Draw[service](xy.x, xy.y);
+                event.preventDefault();
+            }, false);
+        });
+    }
+
 };
 
 window.onload = Init;
