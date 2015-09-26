@@ -6,7 +6,8 @@ var MainView = new MAF.Class({
 
 	initialize: function () {
         this.parent();
-        this.room = new MAF.PrivateRoom(this.RoomName);
+        var view = this;
+        view.room = new MAF.PrivateRoom(this.RoomName);
     },
 
 	createView: function () {
@@ -73,75 +74,63 @@ var MainView = new MAF.Class({
             {},{},{},{}
         ], true);
 
-        this.initRoom(view);
+        this.initRoom();
     },
 
     initRoom : function (view) {
+        var view = this;
         // Set listeners for Room and Connection
         var room = view.room;
-        (function (event) {
-            var payload = event.payload;
-            switch (event.type) {
-                case 'onConnected':
-                    log('room connected');
-                    // If connected but room not joined make sure to join it automaticly
-                    if (!room.joined) room.join();
-                    return;
-                case 'onDisconnected':
-                    clients = {}; // Reset clients
-                    log('connection lost waiting for reconnect and automaticly rejoin');
-                    return;
-                case 'onCreated':
-                    // Create an url to the client application and pass the hash as querystring
-                    var url = widget.getUrl('Client/theater.html?hash=' + payload.hash);
-//                  send request to backend so that it notifies client about hash code
-                    new Request({
-                        url: 'http://localhost:8080/notifications/tv',
-                        method: 'POST', //Anything but GET
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        data: {hash: payload.hash}
-                    }).send();
-//                    var triggered = room.channel.trigger('room-ready', { hash: payload.hash });
-                    log('room created', payload.hash, url);
-                    return;
-                case 'onDestroyed':
-                    clients = {}; // Reset clients
-                    log('room destroyed', payload.hash);
-                    return;
-                case 'onJoined':
-                    // If user is not the app then log the user
-                    if (payload.user !== room.user) {
-                        MAF.messages.store("currentRoom", room);
 
-                        MAF.application.loadView('view-Room',{});
-                    }
-                    return;
-                case 'onHasLeft':
-                    // If user is not the app then log the user
-                    if (payload.user !== room.user)
-                        log('user has left', payload.user);
-                    return;
-                case 'onData':
-                    var data = payload.data;
-                    if (data.e === 'draw')
-                        return;
-                    if (data.e === 'clear')
-                        return this.reset();
-                    break;
-                default:
-                    log(event.type, payload);
-                    break;
-            }
-        }).subscribeTo(view.room, this.supportedRoomEvents);
+        view.roomListener.subscribeTo(view.room, this.supportedRoomEvents, view);
         room.join();
+    },
+
+    roomListener : function (event) {
+        var view = this;
+        var room = view.room;
+        var payload = event.payload;
+        switch (event.type) {
+            case 'onCreated':
+                // Create an url to the client application and pass the hash as querystring
+                var url = widget.getUrl('Client/theater.html?hash=' + payload.hash);
+//                  send request to backend so that it notifies client about hash code
+                new Request({
+                    url: 'http://localhost:8080/notifications/tv',
+                    method: 'POST', //Anything but GET
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: {hash: payload.hash}
+                }).send();
+//                    var triggered = room.channel.trigger('room-ready', { hash: payload.hash });
+                log('room created', payload.hash, url);
+                return;
+            case 'onJoined':
+                // If user is not the app then log the user
+                if (payload.user !== room.user) {
+                    MAF.messages.store("currentRoom", room);
+
+                    MAF.application.loadView('view-Room',{
+                        room : room
+                    });
+                }
+                return;
+            case 'onData':
+                window.Event.call("onData", payload);
+                var data = payload.data;
+                log(event.payload.data);
+                break;
+            default:
+                log(event.type, payload);
+                break;
+        }
     },
 
     hideView: function () {
         // Reference to the current view
         var view = this;
-        MainView.unsubscribeFrom(view.room, this.supportedRoomEvents);
+        view.roomListener.unsubscribeFrom(view.room, this.supportedRoomEvents);
     },
 
     supportedRoomEvents: ['onConnected', 'onDisconnected', 'onCreated', 'onDestroyed', 'onJoined', 'onHasLeft', 'onData', 'onError'],

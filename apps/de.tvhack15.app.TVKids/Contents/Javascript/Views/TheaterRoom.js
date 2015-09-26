@@ -1,6 +1,7 @@
 // Create a class and extended it from the MAF.system.SidebarView
 var TheaterRoom = new MAF.Class({
     ClassName: 'TheaterRoom',
+    RoomName: 'TheaterRoom',
 
     Extends: MAF.system.FullscreenView,
 
@@ -10,7 +11,9 @@ var TheaterRoom = new MAF.Class({
         // Create a Room across all households
 //		view.room = new MAF.Room(view.ClassName);
         // Create a Room for this specific household
-        view.room = MAF.messages.fetch("currentRoom");
+//        view.room = MAF.messages.fetch("currentRoom");
+        view.room = view.persist.room;
+
     },
 
     // Create your view template
@@ -25,62 +28,33 @@ var TheaterRoom = new MAF.Class({
                 backgroundSize: '100%'
             }
         }).appendTo(view);
-        this.initRoom(view);
+        view.roomListener.subscribeTo(view.room, this.supportedRoomEvents, view);
     },
 
-    initRoom : function (view) {
-        // Set listeners for Room and Connection
+    handleData : function (event) {
+        log(event);
+    },
+
+    roomListener : function (event) {
+        var view = this;
         var room = view.room;
-        (function (event) {
-            var payload = event.payload;
-            switch (event.type) {
-                case 'onConnected':
-                    log('room connected');
-                    // If connected but room not joined make sure to join it automaticly
-                    if (!room.joined) room.join();
-                    return;
-                case 'onDisconnected':
-                    clients = {}; // Reset clients
-                    log('connection lost waiting for reconnect and automaticly rejoin');
-                    return;
-                case 'onCreated':
-                    // Create an url to the client application and pass the hash as querystring
-//                    var triggered = room.channel.trigger('room-ready', { hash: payload.hash });
-                    log('room created', payload.hash, url);
-                    return;
-                case 'onDestroyed':
-                    clients = {}; // Reset clients
-                    log('room destroyed', payload.hash);
-                    return;
-                case 'onJoined':
-                    // If user is not the app then log the user
-                    log ('joined user');
-                    return;
-                case 'onHasLeft':
-                    // If user is not the app then log the user
-                    if (payload.user !== room.user)
-                        log('user has left', payload.user);
-                    return;
-                case 'onData':
-                    log('GOT DATA FROM USER!');
-                    var data = payload.data;
-                    if (data.e === 'draw')
-                        return;
-                    if (data.e === 'clear')
-                        return this.reset();
-                    break;
-                default:
-                    log(event.type, payload);
-                    break;
-            }
-        }).subscribeTo(view.room, this.supportedRoomEvents);
-        room.join();
+        var payload = event.payload;
+        switch (event.type) {
+            case 'onData':
+                log('GOT DATA FROM USER!');
+                log(event.payload);
+                window.Event.call("onData", payload);
+                var data = payload.data;
+                break;
+            default:
+                log(event.type, payload);
+                break;
+        }
     },
 
     hideView: function () {
         // Reference to the current view
         var view = this;
-        MainView.unsubscribeFrom(view.room, this.supportedRoomEvents);
     },
 
     supportedRoomEvents: ['onConnected', 'onDisconnected', 'onCreated', 'onDestroyed', 'onJoined', 'onHasLeft', 'onData', 'onError'],
