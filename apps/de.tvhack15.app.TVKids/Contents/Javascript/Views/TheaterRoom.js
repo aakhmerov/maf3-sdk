@@ -49,20 +49,21 @@ var TheaterRoom = new MAF.Class({
 
     updateView : function () {
         var view = this;
-
-        log(view.room);
-        view.roomListener.subscribeTo(view.room, this.supportedRoomEvents, view);
+        this.registerMessageCenterListenerCallback(this.handleData);
     },
 
     handleData : function (event) {
-        log(event);
+        this.moveMonster(event.payload.value);
     },
 
     moveMonster : function (data) {
         var view = this;
-        log(view);
         var monster = this.monsters[data.monster];
-        log(monster);
+        this.monsters[data.monster].animate({
+            hOffset:data.x,
+            vOffset:data.y,
+            duration: 0.3
+        });
     },
 
     roomListener : function (event) {

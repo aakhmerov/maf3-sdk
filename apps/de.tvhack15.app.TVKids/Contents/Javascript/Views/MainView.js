@@ -114,6 +114,10 @@ var MainView = new MAF.Class({
                     });
                 }
                 return;
+            case 'onData':
+                var data = payload.data;
+                MAF.messages.store('monsterMove', payload.data);
+                break;
             default:
                 log(event.type, payload);
                 break;
@@ -126,7 +130,7 @@ var MainView = new MAF.Class({
 //        view.roomListener.unsubscribeFrom(view.room, this.supportedRoomEvents);
     },
 
-    supportedRoomEvents: ['onCreated', 'onJoined'],
+    supportedRoomEvents: ['onCreated', 'onJoined','onData'],
 
     // Reset the Canvas
     reset : function() {
