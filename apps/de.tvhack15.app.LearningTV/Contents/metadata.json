@@ -1,0 +1,27 @@
+{
+    "identifier": "de.tvhack15.app.TVKids",
+    "name": "Learning TV",
+    "version": "1.0.0",
+    "author": "Askar Akhmerov",
+    "company": "TV Hack",
+    "copyright": "",
+    "description": "App to make learning process intertaining for Kids",
+    "keywords": "video funny kids learning",
+    "categories": [
+        "video",
+        "learning",
+        "kids"
+    ],
+    "scripts": "Javascript/init.js",
+    "images": {
+        "header": {
+            "normal": "Images/header.png",
+            "focused": "Images/header-focused.png"
+        },
+        "about": "Images/about.png",
+        "icon": {
+            "192x192": "Images/icon.png"
+        }
+    }
+}
+
