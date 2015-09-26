@@ -19,7 +19,7 @@ var MainView = new MAF.Class({
             styles: {
                 width: view.width,
                 height: view.height,
-                backgroundImage: 'Images/Welcomescreen.jpg',
+                backgroundImage: 'Images/title_tv.png',
                 backgroundRepeat: 'none',
                 backgroundSize: '100%'
             },

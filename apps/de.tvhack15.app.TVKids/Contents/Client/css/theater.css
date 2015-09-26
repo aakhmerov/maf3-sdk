@@ -1,4 +1,6 @@
 #tv-canvas {
     border: 1px solid;
     float: left;
+    width: 70%;
+    height: 99%;
 }

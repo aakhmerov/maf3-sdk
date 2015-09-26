@@ -4,7 +4,7 @@ function Init () {
     channel.bind('room-ready', function(data) {
         console.log ('connecting to room ' + data.hash);
         window.roomHash = data.hash;
-        Draw(getRandomColor());
+        window.draw = Draw(getRandomColor());
         bindCanvasEvents();
     });
     // Create Canvas API
@@ -79,7 +79,7 @@ function Init () {
     }
 
     // Draw API
-    var Draw = function (c) {
+    var Draw = (function (c) {
         var enabled = false,
             room = new MAF.Room(window.roomHash);
         room.join(window.roomHash);
@@ -116,7 +116,7 @@ function Init () {
             end: end,
             paint: paint
         }
-    };
+    });
 
     // Implement cross device xy conversion
     function getXY(e) {
@@ -144,7 +144,7 @@ function Init () {
                         service = 'end';
                         break;
                 }
-                Draw[service](xy.x, xy.y);
+                window.draw[service](xy.x, xy.y);
                 event.preventDefault();
             }, false);
         });
