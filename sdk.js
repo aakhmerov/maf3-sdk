@@ -15,6 +15,18 @@ var os = require('os'),
 http.globalAgent.maxSockets = Infinity;
 https.globalAgent.maxSockets = Infinity;
 
+var Pusher = require('pusher');
+
+var pusher = new Pusher({
+    appId: '144463',
+    key: 'e09a4bff1cae85b0ca3c',
+    secret: '035bd855359607cdd30d'
+});
+
+
+handleClientNotificationRequest = function (req,res) {
+    var triggered = pusher.trigger('tv-theater-channel','room-ready', req.rawBody);
+};
 
 var IP = (function () {
 	var cached;
@@ -82,6 +94,10 @@ app.get('/ip', function (req, res) {
 		if (err) return res.send(500);
 		res.jsonp(jsonip);
 	});
+});
+
+app.post('/notifications/tv', function(req,res){
+    handleClientNotificationRequest(req, res);
 });
 
 app.get('/proxy', function(req,res){

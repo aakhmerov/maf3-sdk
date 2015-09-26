@@ -5,6 +5,7 @@
     "express": "~4.8.5",
     "morgan": "~1.2.3",
     "compression": "~1.0.11",
-    "xml2json": "^0.6.2"
+    "xml2json": "^0.6.2",
+    "pusher": "~1.0.6"
   }
 }

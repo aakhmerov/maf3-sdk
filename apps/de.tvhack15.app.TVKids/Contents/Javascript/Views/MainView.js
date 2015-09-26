@@ -73,8 +73,6 @@ var MainView = new MAF.Class({
             {},{},{},{}
         ], true);
 
-        var pusher = new Pusher('144463');
-        this.channel = pusher.subscribe('tv-theater-channel');
         this.initRoom(view);
     },
 
@@ -96,7 +94,16 @@ var MainView = new MAF.Class({
                 case 'onCreated':
                     // Create an url to the client application and pass the hash as querystring
                     var url = widget.getUrl('Client/theater.html?hash=' + payload.hash);
-                    var triggered = this.channel.trigger('room-ready', { hash: payload.hash });
+//                  send request to backend so that it notifies client about hash code
+                    new Request({
+                        url: 'http://localhost:8080/notifications/tv',
+                        method: 'POST', //Anything but GET
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        data: {hash: payload.hash}
+                    }).send();
+//                    var triggered = room.channel.trigger('room-ready', { hash: payload.hash });
                     log('room created', payload.hash, url);
                     return;
                 case 'onDestroyed':
@@ -134,7 +141,17 @@ var MainView = new MAF.Class({
 
     },
 
+    destroyView: function () {
+        var view = this;
+        if (view.room) {
+            view.room.leave(); // Leave room, will trigger an onLeaved of the app user
+            view.room.destroy(); // Destroy the room
+            delete view.room; // Unreference from view for GC
+        }
+    },
+
 	updateView: function () {
 
 	}
+
 });

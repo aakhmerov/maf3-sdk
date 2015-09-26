@@ -1,5 +1,5 @@
 function Init () {
-    var pusher = new Pusher('144463');
+    var pusher = new Pusher('e09a4bff1cae85b0ca3c');
     var channel = pusher.subscribe('tv-theater-channel');
     channel.bind('room-ready', function(data) {
         alert('An event was triggered with message: ' + data.message);
