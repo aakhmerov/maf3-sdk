@@ -22,7 +22,6 @@ function Init () {
 
         room.addEventListener('joined', function (event) {
             // A client has joined
-            console.log('user joined', event.user);
         });
 
         window.addEventListener('unload', function (event) {
