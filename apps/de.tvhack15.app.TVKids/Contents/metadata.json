@@ -1,11 +1,11 @@
 {
     "identifier": "de.tvhack15.app.TVKids",
-    "name": "TV Kids",
+    "name": "Monster Pet Store",
     "version": "1.0.0",
     "author": "Askar Akhmerov",
     "company": "TV Hack",
     "copyright": "",
-    "description": "App to make learning process intertaining for Kids",
+    "description": "Edutainment application",
     "keywords": "video funny kids learning",
     "categories": [
         "video",
