@@ -4,8 +4,10 @@ function Init () {
     channel.bind('room-ready', function(data) {
         window.roomHash = data.hash;
         window.draw = Draw();
+        bindCanvasEvents();
+        $('.status').html('ready');
     });
-    bindCanvasEvents();
+
 
 
     // Draw API
