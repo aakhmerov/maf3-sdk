@@ -12,6 +12,9 @@ function Init () {
 
     // Draw API
     var Draw = (function (c) {
+
+        var tvScreenWidth = 1920;
+        var tvScreenHeigth = 1080;
         var enabled = false,
             room = new MAF.Room(window.roomHash);
         room.hash = window.roomHash;
@@ -29,9 +32,11 @@ function Init () {
 
 //      notify TV to move picture to mapped position xy
         var moveTo = function (x,y,monster) {
+            var newX = x * (tvScreenWidth / $(window).width());
+            var newY = y * (tvScreenHeigth / $(window).height());
             room.send({
-                x:x,
-                y:y,
+                x:newX,
+                y:newY,
                 monster:monster
             });
         };
