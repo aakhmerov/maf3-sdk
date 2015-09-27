@@ -5,7 +5,7 @@ function Init () {
         window.roomHash = data.hash;
         window.draw = Draw();
         bindCanvasEvents();
-        $('.status').html('ready');
+        $('.status').css('background-image','url(\'images/connect_on.png\' )');
     });
 
 

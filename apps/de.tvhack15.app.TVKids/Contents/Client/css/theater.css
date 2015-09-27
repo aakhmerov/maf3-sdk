@@ -10,6 +10,7 @@
     background-repeat: no-repeat;
     background-color: transparent;
     background-size: 99% 99%;
+    z-index: 0;
 }
 
 .left {
@@ -31,7 +32,26 @@
     background-repeat: no-repeat;
     background-color: transparent;
     background-size: 10em 10em;
+    z-index: 1;
+    display: inline-block;
 }
+
+.ui-loader {
+    display: none;
+}
+
+.status {
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-size: 200px 60px;
+    z-index: 1;
+    background-image: url('../images/connect_off.png');
+    position: absolute;
+    bottom: 2em;
+    width: 200px;
+    height: 60px;
+}
+
 
 .monster1 {
     background-image: url('../images/monster_orange.png');
