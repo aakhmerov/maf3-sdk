@@ -18,38 +18,26 @@ var TheaterRoom = new MAF.Class({
             styles: {
                 width: view.width,
                 height: view.height,
-                backgroundImage: 'Images/title_tv.png',
+                backgroundImage: 'Images/living_room_tv.png',
                 backgroundRepeat: 'none',
                 backgroundSize: '100%'
             }
         }).appendTo(view);
         this.monsters = {};
         this.monsters["1"] = new MAF.element.Image ({
-            src: 'Images/monster_orange.png',
-            styles : {
-                vOffset:0
-            }
+            src: 'Images/monster_orange.png'
         }).appendTo(view);
 
         this.monsters["2"] = new MAF.element.Image ({
-            src: 'Images/monster_yellow.png',
-            styles : {
-                vOffset:this.monsters["1"].height
-            }
+            src: 'Images/monster_yellow.png'
         }).appendTo(view);
 
         this.monsters["3"] = new MAF.element.Image ({
-            src: 'Images/mosnter_green.png',
-            styles : {
-                vOffset:this.monsters["1"].height + this.monsters["2"].height
-            }
+            src: 'Images/mosnter_green.png'
         }).appendTo(view);
 
-        this.monsters["3"] = new MAF.element.Image ({
-            src: 'Images/monster_red.png',
-            styles : {
-                vOffset:this.monsters["1"].height + this.monsters["2"].height
-            }
+        this.monsters["4"] = new MAF.element.Image ({
+            src: 'Images/monster_red.png'
         }).appendTo(view);
 
     },
