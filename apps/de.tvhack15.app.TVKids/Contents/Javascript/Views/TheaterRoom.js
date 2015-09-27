@@ -68,7 +68,7 @@ var TheaterRoom = new MAF.Class({
         this.monsters[data.monster].animate({
             hOffset:data.x,
             vOffset:data.y,
-            duration: 0.3
+            duration: 0.01
         });
     },
 

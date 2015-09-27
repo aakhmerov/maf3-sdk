@@ -83,9 +83,12 @@ var MainView = new MAF.Class({
             case 'onJoined':
                 // If user is not the app then log the user
                 if (payload.user !== room.user) {
-                    MAF.application.loadView('view-Room',{
-                        room : room
-                    });
+                    setTimeout(function(){
+                        MAF.application.loadView('view-Room',{
+                            room : room
+                        });
+                    }, 3000);
+
                 }
                 return;
             case 'onData':
