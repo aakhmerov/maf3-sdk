@@ -45,6 +45,17 @@ var TheaterRoom = new MAF.Class({
     updateView : function () {
         var view = this;
         this.registerMessageCenterListenerCallback(this.handleData);
+//        align monsters in one row
+        var sumx = 0;
+        for (var monster in this.monsters) {
+            var m = this.monsters[monster];
+
+            m.animate({
+                hOffset:sumx,
+                duration: 0.3
+            });
+            sumx = sumx + m.srcWidth + 5;
+        }
     },
 
     handleData : function (event) {
