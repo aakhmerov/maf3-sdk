@@ -45,6 +45,13 @@ var TheaterRoom = new MAF.Class({
             }
         }).appendTo(view);
 
+        this.monsters["3"] = new MAF.element.Image ({
+            src: 'Images/monster_red.png',
+            styles : {
+                vOffset:this.monsters["1"].height + this.monsters["2"].height
+            }
+        }).appendTo(view);
+
     },
 
     updateView : function () {

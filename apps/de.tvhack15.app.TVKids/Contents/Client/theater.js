@@ -54,8 +54,6 @@ function Init () {
 
                 var x = thisPos.left - parentPos.left;
                 var y = thisPos.top - parentPos.top;
-
-                $this.text(x + ", " + y);
                 window.draw.moveTo(x,y,monsterId);
             },
             stop: function() {
