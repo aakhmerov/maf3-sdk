@@ -18,7 +18,7 @@ var TheaterRoom = new MAF.Class({
             styles: {
                 width: view.width,
                 height: view.height,
-                backgroundImage: 'Images/living_room_tv.png',
+                backgroundImage: 'Images/living_room_bg2.png',
                 backgroundRepeat: 'none',
                 backgroundSize: '100%'
             }
